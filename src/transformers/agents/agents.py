@@ -673,7 +673,7 @@ class CodeAgent(Agent):
         self.logger.info(self.prompt)
 
         additional_args = {"grammar": self.grammar} if self.grammar is not None else {}
-        llm_output = self.llm_engine(self.prompt, stop_sequences=["<end_action>"], **additional_args)
+        llm_output = self.llm_engine(self.prompt, stop=["<end_action>"], **additional_args)
 
         if return_generated_code:
             return llm_output
@@ -919,7 +919,7 @@ Now begin!""",
                 ),
             }
             answer_plan = self.llm_engine(
-                [message_system_prompt_plan, message_user_prompt_plan], stop_sequences=["<end_plan>"]
+                [message_system_prompt_plan, message_user_prompt_plan], stop=["<end_plan>"]
             )
 
             final_plan_redaction = f"""Here is the plan of action that I will follow to solve the task:
@@ -967,7 +967,7 @@ Now begin!""",
                 ),
             }
             plan_update = self.llm_engine(
-                [plan_update_message] + agent_memory + [plan_update_message_user], stop_sequences=["<end_plan>"]
+                [plan_update_message] + agent_memory + [plan_update_message_user], stop=["<end_plan>"]
             )
 
             # Log final facts and plan
@@ -1033,7 +1033,7 @@ class ReactJsonAgent(ReactAgent):
         try:
             additional_args = {"grammar": self.grammar} if self.grammar is not None else {}
             llm_output = self.llm_engine(
-                self.prompt, stop_sequences=["<end_action>", "Observation:"], **additional_args
+                self.prompt, stop=["<end_action>", "Observation:"], **additional_args
             )
         except Exception as e:
             raise AgentGenerationError(f"Error in generating llm output: {e}.")
@@ -1158,7 +1158,7 @@ class ReactCodeAgent(ReactAgent):
         try:
             additional_args = {"grammar": self.grammar} if self.grammar is not None else {}
             llm_output = self.llm_engine(
-                self.prompt, stop_sequences=["<end_action>", "Observation:"], **additional_args
+                self.prompt, stop=["<end_action>", "Observation:"], **additional_args
             )
         except Exception as e:
             raise AgentGenerationError(f"Error in generating llm output: {e}.")
