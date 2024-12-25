@@ -1158,7 +1158,7 @@ class ReactCodeAgent(ReactAgent):
         try:
             additional_args = {"grammar": self.grammar} if self.grammar is not None else {}
             llm_output = self.llm_engine(
-                self.prompt, stop=["<end_action>", "Observation:"], **additional_args
+                self.prompt, **additional_args
             )
         except Exception as e:
             raise AgentGenerationError(f"Error in generating llm output: {e}.")
